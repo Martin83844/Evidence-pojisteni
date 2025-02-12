@@ -1,0 +1,107 @@
+CREATE SEQUENCE [dbo].[CustomerNumberSequence]
+    AS INT
+    START WITH 10000001
+    INCREMENT BY 1;
+GO
+
+CREATE SEQUENCE [dbo].[DamageRecordsSequence]
+    AS INT
+    START WITH 1
+    INCREMENT BY 10000001;
+GO
+
+CREATE SEQUENCE [dbo].[Seq_CarInsurance]
+    AS BIGINT
+    START WITH 1
+    INCREMENT BY 1;
+GO
+
+CREATE SEQUENCE [dbo].[Seq_HomeInsurance]
+    AS BIGINT
+    START WITH 1
+    INCREMENT BY 1;
+GO
+
+CREATE SEQUENCE [dbo].[Seq_CarInsuranceAccidentRecord]
+    AS BIGINT
+    START WITH 1
+    INCREMENT BY 1;
+GO
+
+CREATE SEQUENCE [dbo].[Seq_HomeInsuranceDamageRecord]
+    AS BIGINT
+    START WITH 1
+    INCREMENT BY 1;
+GO
+
+
+CREATE PROCEDURE GenerateCarInsuranceId
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @NextValue BIGINT;
+    DECLARE @GeneratedId NVARCHAR(450);
+
+    -- Získání další hodnoty ze sekvence
+    SET @NextValue = NEXT VALUE FOR dbo.Seq_CarInsurance;
+
+    -- Vytvoření ID s formátem 'PV' a osmimístné číslo
+    SET @GeneratedId = CONCAT('PV', FORMAT(@NextValue, '00000000'));
+
+    -- Vrácení ID
+    SELECT @GeneratedId AS CarInsuranceId;
+END;
+GO
+
+CREATE PROCEDURE GenerateHomeInsuranceId
+AS
+BEGIN
+    SET NOCOUNT ON;
+
+    DECLARE @NextValue BIGINT;
+    DECLARE @GeneratedId NVARCHAR(450);
+
+    -- Získání další hodnoty ze sekvence
+    SET @NextValue = NEXT VALUE FOR dbo.Seq_HomeInsurance;
+
+    -- Vytvoření ID s formátem 'PN' a osmimístné číslo
+    SET @GeneratedId = CONCAT('PN', FORMAT(@NextValue, '00000000'));
+
+    -- Vrácení ID
+    SELECT @GeneratedId AS HomeInsuranceId;
+END;
+GO
+
+CREATE PROCEDURE GenerateCarInsuranceAccidentRecordId
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @NextValue INT;
+	DECLARE @GeneratedId NVARCHAR(450);
+
+	SET @NextValue = NEXT VALUE FOR dbo.Seq_CarInsuranceAccidentRecord;
+
+	SET @GeneratedId = CONCAT('PVU', FORMAT(@NextValue, '00000000'));
+
+	SELECT @GeneratedId AS CarInsuranceAccidentRecordId;
+END;
+GO
+
+CREATE PROCEDURE GenerateHomeInsuranceDamageRecordId
+AS
+BEGIN
+	SET NOCOUNT ON;
+
+	DECLARE @NextValue INT;
+	DECLARE @GeneratedId NVARCHAR(450);
+
+	SET @NextValue = NEXT VALUE FOR dbo.Seq_HomeInsuranceDamageRecord;
+
+	SET @GeneratedId = CONCAT('PNU', FORMAT(@NextValue, '00000000'));
+
+	SELECT @GeneratedId AS HomeInsuranceDamageRecordId;
+END;
+GO
+
